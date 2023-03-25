@@ -1,6 +1,6 @@
 # ORB-SLAM3-ROS
-ROS version modified from [orb_slam3_ros](https://github.com/thien94/orb_slam3_ros), latest [commit](https://github.com/thien94/orb_slam3_ros/commit/6378848672ab27e3ac741f335157e7d03ba83d22)
-A ROS implementation of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) V1.0 that focuses on the ROS part.
+- ROS version modified from [orb_slam3_ros](https://github.com/thien94/orb_slam3_ros), latest [commit](https://github.com/thien94/orb_slam3_ros/commit/6378848672ab27e3ac741f335157e7d03ba83d22)
+- A ROS implementation of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) V1.0 that focuses on the ROS part.
 
 ### Pangolin
 ```
