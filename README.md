@@ -1,23 +1,13 @@
 # ORB-SLAM3-ROS
-
+ROS version modified from [orb_slam3_ros](https://github.com/thien94/orb_slam3_ros), latest [commit](https://github.com/thien94/orb_slam3_ros/commit/6378848672ab27e3ac741f335157e7d03ba83d22)
 A ROS implementation of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) V1.0 that focuses on the ROS part.
 
-This package uses ```catkin build```. Tested on Ubuntu 20.04.
-## 1. Prerequisites
-### Eigen3
-```
-sudo apt install libeigen3-dev
-```
 ### Pangolin
 ```
-cd ~
+cd orb_slam3/Thirdparty
 git clone https://github.com/stevenlovegrove/Pangolin.git
-cd Pangolin
-mkdir build && cd build
-cmake ..
-make
-sudo make install
 ```
+
 ### OpenCV
 Check the OpenCV version on your computer (required [at least 3.0](https://github.com/UZ-SLAMLab/ORB_SLAM3)):
 ```
