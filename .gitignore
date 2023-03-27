@@ -1,11 +1,6 @@
-# Ignore all
-*
+orb_slam3/Vocabulary/ORBvoc.txt
+orb_slam3/Vocabulary/ORBvoc.txt.tar.gz
 
-# Unignore all with extensions
-!*.*
-
-# Unignore all dirs
-!*/
 
 CMakeLists.txt.user
 CMakeLists_modified.txt
