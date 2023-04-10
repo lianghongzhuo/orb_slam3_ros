@@ -1,38 +1,45 @@
 # ORB-SLAM3-ROS
-- ROS version modified from [orb_slam3_ros](https://github.com/thien94/orb_slam3_ros), latest [commit](https://github.com/thien94/orb_slam3_ros/commit/6378848672ab27e3ac741f335157e7d03ba83d22)
+- ROS version modified from [orb_slam3_ros](https://github.com/thien94/orb_slam3_ros), based on this [commit](https://github.com/thien94/orb_slam3_ros/commit/6378848672ab27e3ac741f335157e7d03ba83d22).
 - A ROS implementation of [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) V1.0 that focuses on the ROS part.
+- New feature:
+    - Change back to use text file vocabulary.
+    - Super small repo size. (removed big git history, removed vocabulary file and other data files)
+    - Do not install Pangolin system wise.
 
-### Pangolin
-```
-cd orb_slam3/Thirdparty
-git clone https://github.com/stevenlovegrove/Pangolin.git
-```
-
+## 1. Installation
 ### OpenCV
-Check the OpenCV version on your computer (required [at least 3.0](https://github.com/UZ-SLAMLab/ORB_SLAM3)):
-```
-python3 -c "import cv2; print(cv2.__version__)" 
-```
-On a freshly installed Ubuntu 20.04.4 LTS with desktop image, OpenCV 4.2.0 is already included. If a newer version is required (>= 3.0), follow [installation instruction](https://docs.opencv.org/4.x/d0/d3d/tutorial_general_install.html) and change the corresponding OpenCV version in `CMakeLists.txt`
+Install the newest version.
 
 ### (Optional) `hector-trajectory-server`
 Install `hector-trajectory-server` to visualize the real-time trajectory of the camera/imu. Note that this real-time trajectory might not be the same as the keyframes' trajectory.
+```bash
+sudo apt install ros-noetic-hector-trajectory-server
 ```
-sudo apt install ros-[DISTRO]-hector-trajectory-server
-```
-## 2. Installation
-```
+
+### ROS environment
+```bash
+# Make a ROS workspce
+mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/thien94/orb_slam3_ros.git
-cd ../
+# Clone orb slam ros source code
+git clone git@github.com:lianghongzhuo/orb_slam3_ros.git
+# Get Pangolin source code
+cd orb_slam3_ros/orb_slam3/Thirdparty
+git clone https://github.com/stevenlovegrove/Pangolin.git
+# Download Vocabulary from original package
+cd ../Vocabulary
+wget https://github.com/UZ-SLAMLab/ORB_SLAM3/raw/master/Vocabulary/ORBvoc.txt.tar.gz
+tar -xf ORBvoc.txt.tar.gz
+cd ../../../..
+# Build ROS package
 catkin build
 ```
 
-## 3. Run Examples
+## 2. Run Examples
 
 ### Mono mode with [NTU VIRAL](https://ntu-aris.github.io/ntu_viral_dataset/)'s [`eee_01.bag`](https://researchdata.ntu.edu.sg/api/access/datafile/68133):
 
-```
+```bash
 # In one terminal:
 roslaunch orb_slam3_ros ntuviral_mono.launch
 # In another terminal:
@@ -41,7 +48,7 @@ rosbag play eee_01.bag -s 50 # The UAV starts moving at t~50s
 ### Stereo mode with [KITTI](https://www.cvlibs.net/datasets/kitti/index.php)'s [`2011_09_26`](https://www.cvlibs.net/datasets/kitti/raw_data.php):
 - First, download KITTI dataset and convert the raw data into bag file following [this instruction](https://stevenliu216.github.io/2018/08/05/working-with-kitti-ros/). You can automate the downloading process using [this script](https://github.com/Deepak3994/Kitti-Dataset).
 - Run the example:
-```
+```bash
 # In one terminal:
 roslaunch orb_slam3_ros kitti_stereo.launch
 # In another terminal:
@@ -49,21 +56,21 @@ rosbag play kitti_2011_09_26_drive_0002_synced.bag
 ```
 
 ### Mono-inertial mode with [EuRoC](https://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets)'s [`MH_01_easy.bag`]( http://robotics.ethz.ch/~asl-datasets/ijrr_euroc_mav_dataset/machine_hall/MH_01_easy/MH_01_easy.bag):
-```
+```bash
 # In one terminal:
 roslaunch orb_slam3_ros euroc_mono_inertial.launch
 # In another terminal:
 rosbag play MH_01_easy.bag
 ```
 ### Stereo-inertial mode with [TUM-VI](https://vision.in.tum.de/data/datasets/visual-inertial-dataset)'s [`dataset-corridor1_512_16.bag`](https://vision.in.tum.de/tumvi/calibrated/512_16/dataset-corridor1_512_16.bag)
-```
+```bash
 # In one terminal:
 roslaunch orb_slam3_ros tum_vi_stereo_inertial.launch
 # In another terminal:
 rosbag play dataset-corridor1_512_16.bag
 ```
 ### RGB-D mode with [TUM](http://vision.in.tum.de/data/datasets/rgbd-dataset/download)'s [`rgbd_dataset_freiburg1_xyz.bag`](https://vision.in.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz.bag)
-```
+```bash
 # In one terminal:
 roslaunch orb_slam3_ros tum_rgbd.launch
 # In another terminal:
@@ -86,14 +93,14 @@ rosbag play Normal.bag
 - Modify the original `rs_t265.launch` to enable fisheye images and imu data (change `unite_imu_method` to `linear_interpolation`).
 - Run `rs-enumerate-devices -c` to get the calibration parameters and modify `config/Stereo-Inertial/RealSense_T265.yaml` accordingly. A detailed explaination can be found [here](https://github.com/shanpenghui/ORB_SLAM3_Fixed#73-set-camera-intrinsic--extrinsic-parameters).
 - Run:
-```
+```bash
 # In one terminal:
 roslaunch realsense2_camera rs_t265.launch
 # In another terminal:
 roslaunch orb_slam3_ros rs_t265_stereo_inertial.launch
 ```
 
-### Save and load map 
+### Save and load map
 
 The map file will have `.osa` extension, and is located in the `ROS_HOME` folder (`~/.ros/` by default).
 #### Load map:
@@ -102,11 +109,11 @@ The map file will have `.osa` extension, and is located in the `ROS_HOME` folder
 #### Save map:
 - **Option 1**: If `System.SaveAtlasToFile` is set in the settings file, the map file will be automatically saved when you kill the ros node.
 - **Option 2**: You can also call the following ros service at the end of the session
-```
+```bash
 rosservice call /orb_slam3/save_map [file_name]
 ```
 
-## 4. ROS topics, params and services
+## 3. ROS topics, params and services
 ### Subscribed topics
 - `/camera/image_raw` for Mono(-Inertial) node
 - `/camera/left/image_raw` for Stereo(-Inertial) node
@@ -129,19 +136,3 @@ rosservice call /orb_slam3/save_map [file_name]
 ### Services
 - `rosservice call /orb_slam3/save_map [file_name]`: save the map as `[file_name].osa` in `ROS_HOME` folder.
 - `rosservice call /orb_slam3/save_traj [file_name]`: save the estimated trajectory of camera and keyframes as `[file_name]_cam_traj.txt` and  `[file_name]_kf_traj.txt` in `ROS_HOME` folder.
-
-### Docker
-Provided [Dockerfile](Dockerfile) sets up an image based a ROS noetic environment including RealSense SDK
-
-To access a USB device (such as RealSense camera) inside docker container use:
-``` bash
-docker run --network host --privileged -v /dev:/dev -it [image_name]
-```
-
-> **_NOTE:_**  `--network host` is recommended to listen to rostopics outside the container
-
-## To-do:
-- ~~Publish basic topics (camera pose, tracking image and point cloud)~~
-- ~~Publish more topics (odom, full map pointcloud, keyframe, etc.)~~
-- ~~Add other functions as services (map save/load, save estimated trajectory, etc.)~~
-- ~~Add docker support~~
